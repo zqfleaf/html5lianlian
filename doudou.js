@@ -1,17 +1,13 @@
 /**
- * JoinGame Doudou library v0.0.1
+ * JoinGame Doudou library v0.1.1
  * http:///
- * Copyright 2012, Hunter.
+ * Copyright 2015, Hunter.
  * Licensed under the MIT or GPL Version 2 licenses.
- * Date: Mar 12 2012
+ * Date: Mar 12 2015
  *
- * Copyright (C) 2011 - 2012 by Hunter. Qiufeng.Zheng
+ * (C) 2015 - 2015 by Hunter. Qiufeng.Zheng
  *
 **/
-var img=new Image();
-img.src="logo.png";
-
-
 
 
 (function( window, undefined ) {
@@ -35,21 +31,22 @@ img.src="logo.png";
 		this.picHeight=40;
 		this.leftPadding=0;
 		this.topPadding=0;
-		this.img=new Image();
-		this.imgPosition=[0,
-											1,45,88,132,175,217,261,304,347,390,
-											433,476,519,562,605,648,691,734,777,820,
-											863,907,950,993,1036,1080,1123,1169,1209,1252];
+		this.img;
+		this.imgPosition;
 		 /**
+		this.imgPosition=[0,
+				1,45,88,132,175,217,261,304,347,390,
+				433,476,519,562,605,648,691,734,777,820,
+				863,907,950,993,1036,1080,1123,1169,1209,1252];
 		 * Modify here from color to small picture.
-     * 
+     	* 
 		this.colortypes=['#ffffff','#330055','#0000aa','#7700ff',
-										 '#005500','#335555','#0055aa','#7733ff',
-										 '#00aa00','#33aa55','#00aaaa','#7799ff',
-										 '#00dd00','#33dd55','#00ddaa','#77bbff',
-										 '#00ff00','#33ff55','#00ffaa','#77bbff'];
+					 '#005500','#335555','#0055aa','#7733ff',
+					 '#00aa00','#33aa55','#00aaaa','#7799ff',
+					 '#00dd00','#33dd55','#00ddaa','#77bbff',
+					 '#00ff00','#33ff55','#00ffaa','#77bbff'];
 
-     */
+     	*/
 	    this.totalCount=0;
 	    this.moveType=0;
 	    this.selectedPoint = {
@@ -81,14 +78,20 @@ img.src="logo.png";
 		this.success=function(){};
 		this.passthrough = function(){};
 		this.clearOne = function(){};
+		/*
 		this.SoundCG = new Audio('chuangguan.wav');  
 		this.SoundSelect = new Audio('click.wav');  
 		this.SoundDisappear = new Audio('dispear.wav');  
 		this.SoundResort = new Audio('resort.wav');  
 		this.SoundNoDisappear = new Audio('nodispear.wav');  
-		
-		this.IsNeedDrawLine = true;
-		
+		*/
+		this.SoundCG;
+		this.SoundSelect;
+		this.SoundDisappear;
+		this.SoundResort;
+		this.SoundNoDisappear;		
+		 
+		this.IsNeedDrawLine = true;		
 		
 		this.icount=0;
 		this.score=0;
@@ -101,7 +104,7 @@ img.src="logo.png";
 					webKit: u.indexOf('AppleWebKit') > -1, //apple¡¢google core                
 					gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //firefox core                
 					mobile: !(u.indexOf('Windows')>-1) &&
-						 (!!u.match(/AppleWebKit.*Mobile.*/)||!!u.match(/AppleWebKit/)), //is mobile                
+						(!!u.match(/AppleWebKit.*Mobile.*/)||!!u.match(/AppleWebKit/)), //mobile                
 					ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios                
 					android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android                
 					iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //iPhone QQHD                
@@ -117,11 +120,11 @@ img.src="logo.png";
 	};
 	Doudou.prototype={
 
-    /**
-     * Click a picture on the map
-     * @param {row} row number
-     * @param {col} col number
-     */		
+	    /**
+	     * Click a picture on the map
+	     * @param {row} row number
+	     * @param {col} col number
+	     */		
 		select:function(row,col){
 			if( row>0 && row<=this.rows && col>0 && col<=this.cols){
 				if (this.fullMap[row][col]==0) {
@@ -642,7 +645,7 @@ img.src="logo.png";
 		    ctx.stroke();
 		    ctx.closePath();
 		    if (color){
-		    	ctx.drawImage(img,0,this.imgPosition[color],44,41,x*this.picWidth+this.leftPadding, y*this.picHeight+this.topPadding,this.picWidth,this.picHeight);
+		    	ctx.drawImage(this.img,0,this.imgPosition[color],44,41,x*this.picWidth+this.leftPadding, y*this.picHeight+this.topPadding,this.picWidth,this.picHeight);
 		    }
 		},
 		
@@ -742,6 +745,7 @@ img.src="logo.png";
 			//alert(this.fullMap.toString());
 		}		
 	};
+	
 	/*
 	function isArray(o) {  
   	return Object.prototype.toString.call(o) === '[object Array]';   
