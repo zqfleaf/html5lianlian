@@ -1,0 +1,188 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> 
+	<title>连连看-调用js库例子</title>
+	<meta charset="utf-8">
+    <script src="https://rawgit.com/zqfleaf/html5lianlian/master/doudou.js"></script>
+    <script>  
+    	
+    	//连连看图的集合图
+		var img=new Image();
+		img.src="logo.png";
+		
+	    var aa=new Doudou;	
+	    
+		window.addEventListener('load', function () {				
+				
+	    	//aa.createmap(11,6);
+	    	//根据屏幕计算最合理的行,列
+	    	var _rows=aa.checkrows;
+	    	var _cols=aa.checkcols;
+	    	
+	    	//每个图的位置
+	    	aa.img=img;
+			aa.imgPosition=[0,
+			1,45,88,132,175,217,261,304,347,390,
+			433,476,519,562,605,648,691,734,777,820,
+			863,907,950,993,1036,1080,1123,1169,1209,1252];
+	    	
+	    	//声音
+			aa.SoundCG = new Audio('chuangguan.wav');  
+			aa.SoundSelect = new Audio('click.wav');  
+			aa.SoundDisappear = new Audio('dispear.wav');  
+			aa.SoundResort = new Audio('resort.wav');  
+			aa.SoundNoDisappear = new Audio('nodispear.wav');  
+			
+			//创建行列数据
+	    	aa.createmap(_rows,_cols);
+	    	//aa.createmap(6,6);
+	    	
+	    	//初始化画布
+	    	aa.initCanvas();
+	    	
+	    	//画出画面
+	    	aa.drawMap();
+	    	
+	    	
+	    	//绑定事件
+	    	//当闯关成功
+	    	aa.success=playcomplete;
+	    	
+	    	//过一关时
+	    	aa.passthrough=pass;
+	    	
+	    	//每消掉一对时
+	    	aa.clearOne=clear1;
+			
+			//自定义成绩用
+			aa.score=0;
+
+			//aa.icount 计时用,每次重排icount+60
+
+	    	//aa.test();	
+			window.el=document.getElementById('lineCanvas');
+	    	window.et=document.getElementById('CountTime');
+	    	window.rt=document.getElementById('reset');
+			et.style.left=el.width-80;	
+			et.innerText='Time:' + aa.icount;
+			rt.innerText='重排:' + ' -1-固定不动';
+	    	window.setInterval(clearControlContext,1000);
+		}, false);
+		
+		function clearControlContext(){
+			var ctx=el.getContext('2d');
+			ctx.clearRect(0,0,el.width,el.height);
+			aa.icount < 3600 ? aa.icount++ : 3600;
+			et.innerText='Time:' + aa.icount;
+		}
+		function resort(){
+			 if(confirm("是否重排?"))
+			 {
+			 	aa.manResort();
+				//location.href="score.php?total="+(aa.rows*aa.cols)+"&seconds="+aa.icount;
+			 }
+		}
+		
+		function clear1(){
+			aa.score+=10;
+		}
+		
+		function pass(){
+			alert("过关,按确定进入下一关!");				
+	    	switch (this.moveType){	
+	    		case 1:
+	    			rt.innerText='重排:' + ' -1-向下移动';
+	    			break;
+	    		case 2:
+	    			rt.innerText='重排:' + ' -2-向上移动';
+	    			break;
+	    		case 3:
+	    			rt.innerText='重排:' + ' -3-向左移动';
+	    			break;
+	    		case 4:
+	    			rt.innerText='重排:' + ' -4-向右移动';
+	    			break;
+	    		case 5:
+	    			rt.innerText='重排:' + ' -5-上下分离';
+	    			break;
+	    		case 6:
+	    			rt.innerText='重排:' + ' -6-上下集中';
+	    			break;
+	    		case 7:
+	    			rt.innerText='重排:' + ' -7-左右分离';
+	    			break;
+	    		case 8:
+	    			rt.innerText='重排:' + ' -8-左右集中';
+	    			break;
+	    		default:
+	    	}
+	    		
+		}
+		
+		function playcomplete(){
+			alert('闯关成功!');
+			/*
+			if (aa.browser.versions.android) nick='Android';
+			if (aa.browser.versions.iPhone) nick='iPhone';
+			if (aa.browser.versions.iPad) nick='iPad';
+			if (!aa.browser.versions.mobile) nick='PC';
+			if (navigator.userAgent.indexOf('HuaweiB199')>-1) nick='HuaweiB199';
+			
+			location.href="score.php?total="+(aa.rows*aa.cols)+"&seconds="+aa.icount
+							+"&gameid="+gameid+"&nick="+nick+"&wxid=";
+		*/
+		}
+			
+    </script>
+		<style type="text/css">
+		#myCanvas {
+			z-index:0;
+			position:absolute;
+			top:0;
+			left:0;
+			}
+		#conCanvas {
+			z-index:2;			
+			position:absolute;
+			top:0;
+			left:0;
+			}
+		#lineCanvas {
+			z-index:1;			
+			position:absolute;
+			top:0;
+			left:0;
+			}
+		#main{
+			background-color:#000;
+		}
+		body{
+			background-color:#000;			
+		}
+		#CountTime { 
+		  top:8px; 
+		  position:absolute;  
+		  color:#FFF;
+		} 
+		#reset { 
+		  top:8px; 
+		  left:20px;
+		  position:absolute;  
+		  color:#FFF;
+		  z-index:3;	
+		} 
+		</style>
+</head>
+<body onmousedown="return false;">
+	  <div id="main">
+    <canvas id="myCanvas" width="100%" height="100%">Your browser does not have 
+    support for Canvas.</canvas>
+    <canvas id="conCanvas" width="100%" height="100%">Your browser does not have 
+    support for Canvas.</canvas>
+    <canvas id="lineCanvas" width="100%" height="100%">Your browser does not have 
+    support for Canvas.</canvas>
+    <div id='CountTime'></div>
+    <div id='reset' onclick="resort();">重排</div>
+  </div>
+</body>
+</html>
